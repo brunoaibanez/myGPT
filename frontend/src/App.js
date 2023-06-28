@@ -1,11 +1,60 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
+function MessageContainer({ messages }) {
+  const responseRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    responseRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="message-container">
+      {messages.map((msg) => (
+        <div className={`message ${msg.sender}`} key={msg.id}>
+          <div className="logo-container">
+            {msg.sender === 'bot' ? (
+              <img src="logo192.png" alt="bot-img" className="logo" />
+            ) : (
+              <img src="icons8-user-100-2.png" alt="user-img" className="logo" />
+            )}
+          </div>
+          <div className="text-container">{msg.content}</div>
+        </div>
+      ))}
+      <div ref={responseRef}></div>
+    </div>
+  );
+}
+
+function MessageInput({ inputValue, loading, onMessageChange, onSubmit }) {
+  return (
+    <div className="bottom-container">
+      <form onSubmit={onSubmit} className="input-form">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={onMessageChange}
+          placeholder="Enter your message"
+          disabled={loading}
+          className="input-text"
+        />
+        <button type="submit" disabled={loading} className="button-send">
+          <i className="fas fa-check"></i>
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const responseRef = useRef(null);
 
   useEffect(() => {
     // Fetch initial message when the component mounts
@@ -36,7 +85,6 @@ function App() {
 
     setInputValue('');
     setLoading(false);
-    scrollToBottom();
   };
 
   const handleMessageChange = (event) => {
@@ -54,49 +102,18 @@ function App() {
     await fetchMessage(inputValue);
   };
 
-  const scrollToBottom = () => {
-    responseRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <div className="App">
       <h1>MyGPT</h1>
-      
-      <div className="message-container">
-      {messages.map((msg) => (
-        <div className={`message ${msg.sender}`} key={msg.id}>
-          <div className="logo-container">
-          {msg.sender === 'bot' ? (
-            <img src="logo192.png" alt="bot-img" className="logo" />
-          ) : (
-            <img src="icons8-user-100-2.png" alt="user-img" className="logo" />
-          )}
-          </div>
-          <div className="text-container">
-            {msg.content}
-          </div>
-        </div>
-      ))}
-      <div ref={responseRef}></div>
-    </div>
 
-      <div className="bottom-container">
-      <form onSubmit={handleSubmit} className="input-form">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleMessageChange}
-          placeholder="Enter your message"
-          disabled={loading}
-          className="input-text"
-        />
-        <button type="submit" disabled={loading} className="button-send">
-        <i className="fas fa-check"></i>
-        </button>
-        </form>
+      <MessageContainer messages={messages} />
 
-      
-    </div>
+      <MessageInput
+        inputValue={inputValue}
+        loading={loading}
+        onMessageChange={handleMessageChange}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }
