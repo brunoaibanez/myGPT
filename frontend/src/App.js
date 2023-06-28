@@ -90,10 +90,12 @@ function App() {
           disabled={loading}
           className="input-text"
         />
-        <button type="submit" disabled={loading} className="material-symbols-rounded">
-          <i className="fas fas fa-check"></i> 
+        <button type="submit" disabled={loading} className="button-send">
+        <i className="fas fa-check"></i>
         </button>
-      </form>
+        </form>
+
+      
     </div>
     </div>
   );

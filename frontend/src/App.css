@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
+
 * {
   margin: 0;
   padding: 0;
@@ -29,24 +30,35 @@ body {
   flex-direction: column;
 }
 
+.button-send {
+  color: white;
+}
+
 
 
 .bottom-container {
   display: flex;
-  justify-content: center;
-  padding: 20px;
+  justify-content: left;
+  padding: 25px;
+  flex-direction: column;
 }
 
 .input-form {
   display: flex;
+  flex-direction: row;
   align-items: left;
+  size: 25px;
 }
 
 .input-text {
   flex-grow: 10;
-  size: 10px;
+  display: flex;
+  font-size: 15px;
+  flex-direction: row ;
   /* Your other styles... */
 }
+
+
 
 .App button {
   padding: 10px 20px;
